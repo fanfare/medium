@@ -2,6 +2,7 @@ const http = require('http')
 const port = '3528'
 const read = require('node-readability')
 const app = new http.Server()
+
 function scrape(url) { 
   return new Promise((resolve, reject) => {
     read(url, function(err, article, meta) {
@@ -13,9 +14,8 @@ function scrape(url) {
     })
   })
 }
+
 app.on('request', async function(req, res){
-  let method = req.method.toLowerCase()
-  let ip = req.remoteAddress
   let url = req.url.slice(1)
   console.log(url)
   if ( url.substring(0,19) === "https://medium.com/"
@@ -44,8 +44,7 @@ app.on('request', async function(req, res){
   }
   else {
     res.writeHead(404, { 'Content-Type': 'text/html' })
-    res.write('not found')
-    res.end('\n')   
+    res.end('not found')  
     return
   }
 })
